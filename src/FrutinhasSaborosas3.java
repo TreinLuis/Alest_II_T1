@@ -28,14 +28,16 @@ public class FrutinhasSaborosas3 {
         try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {
             String line;
             while ((line = br.readLine()) != null) {
+
                 lines.add(line);
-               //System.out.println(line);
+               System.out.println(line);
             }
         } catch (FileNotFoundException e) {
             throw new RuntimeException("Arquivo não encontrado: " + fileName, e);
         } catch (IOException e) {
             e.printStackTrace();
         }
+        //Uma funcao para ler | Pegar e fazer outra funcao que imprime a matrix | aí depois uma funcao gera matriz pra leitura
         char[][] arvoreLida = convertLinesToMatrix(lines);
         processarArvore(arvoreLida);
 
@@ -114,18 +116,18 @@ public class FrutinhasSaborosas3 {
         int numRows = arvore.length;
         int numCols = arvore[0].length;
         Node[][] nodes = new Node[numRows][numCols];
-        System.out.println(numRows);
+        //System.out.println(numRows);
 
         for(int i=numRows-1; i > 0 ;i--){
             //este for começa a processar a arvore de baixo para cima
             for(int j = 0; j < numCols; j++){//aqui fica normal pois é da esquerda pra direita
                 String valor = String.valueOf(arvore[i][j]);
                     nodes[i][j] = new Node(valor);
-                    System.out.println(nodes[i][j].value);
-
             }
         }
-
-
+        if(!nodes[30][14].value.equalsIgnoreCase(" ")){//Consegui fazer meu programa ignorar os espaços em branco
+            System.out.println("gay");
+        }
+        System.out.println(nodes[30][14].value);
     }
 }
