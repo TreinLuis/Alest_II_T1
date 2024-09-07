@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.sql.SQLOutput;
 import java.util.*;
 
-public class Frutinhas5 {
+public class Teste {
     public static void main(String[] args) {
 
         //Uma funcao para ler | Pegar e fazer outra funcao que imprime a matrix | aí depois uma funcao gera matriz pra leitura
@@ -19,16 +19,14 @@ public class Frutinhas5 {
 
     }
 
-    public static int buscarMelhorCaminho(char[][] matriz,int linha,int coluna, int somaAtual) {//devemos passar nossa matrix e a coordenada do nosso root
+    public static int buscarMelhorCaminho(char[][] matriz, int linha, int coluna, int somaAtual) {
         // Verificar se estamos fora dos limites da matriz
-        //LUIS SEU IDIOTA TU PRECISA FAZER LINHA -- PORQUE O ARQUIVO LE AS LINHAS DE FORMA CONTRARIA DO QUE TU QUER IMBECIL
-//        if (linha < 0 || linha >= matriz.length || coluna < 0 || coluna >= matriz[0].length) {
-//            System.out.println("gay");
-//            return 0;
-//        }
-        //System.out.println(linha);
+        if (linha < 0 || linha >= matriz.length || coluna < 0 || coluna >= matriz[0].length) {
+            return somaAtual;  // Retorna a soma atual se sair dos limites da matriz
+        }
+
         char atual = matriz[linha][coluna];
-        //System.out.println(atual);
+        System.out.println("Posição [" + linha + ", " + coluna + "] = " + atual);
 
         // Se for '#', é o final de um ramo, retornar a soma acumulada
         if (atual == '#') {
@@ -38,46 +36,34 @@ public class Frutinhas5 {
         // Se for um número, acumular o valor na soma atual
         if (Character.isDigit(atual)) {
             somaAtual += Character.getNumericValue(atual);
-            System.out.println(somaAtual);
+            System.out.println("Soma acumulada: " + somaAtual);
         }
 
-        int melhorSoma = 0;
+        int melhorSoma = somaAtual;
 
         // Se for uma bifurcação (V), explorar dois caminhos
         if (atual == 'V') {
-            System.out.println("gay");
-            int somaEsquerda= 0;
-            int somaDireita = 0;
-            // Explorar os dois caminhos possíveis (esquerda e direita)
-            if(atual == '\\'){
-                somaEsquerda = buscarMelhorCaminho(matriz,linha++,coluna--,somaAtual); //Aqui estamos movimentando e percorrendo ela para a esquerda
-            } else if(atual == '/'){
-                somaDireita = buscarMelhorCaminho(matriz, linha++, coluna + 1, somaAtual);
-            }
+            System.out.println("Bifurcação (V) encontrada");
+            int somaEsquerda = buscarMelhorCaminho(matriz, linha - 1, coluna - 1, somaAtual);  // Caminho à esquerda
+            int somaDireita = buscarMelhorCaminho(matriz, linha - 1, coluna + 1, somaAtual);   // Caminho à direita
             melhorSoma = Math.max(somaEsquerda, somaDireita);
-
-            // Se for uma trifurcação (W), explorar três caminhos
-        } else if (atual == 'W') {
-            // Explorar três caminhos possíveis (baixo, direita e diagonal)
-            int somaEsquerda= 0;
-            int somaDireita = 0;
-            int somaMeio = 0;
-            if(atual == '\\'){
-                somaEsquerda = buscarMelhorCaminho(matriz,linha++,coluna--,somaAtual); //Aqui estamos movimentando e percorrendo ela para a esquerda
-            } else if(atual == '/'){
-                somaDireita = buscarMelhorCaminho(matriz, linha++, coluna + 1, somaAtual);
-            } else if(atual == '|'){
-                somaMeio = buscarMelhorCaminho(matriz,linha++,coluna,somaAtual);
-            }
+        }
+        // Se for uma trifurcação (W), explorar três caminhos
+        else if (atual == 'W') {
+            System.out.println("Trifurcação (W) encontrada");
+            int somaEsquerda = buscarMelhorCaminho(matriz, linha - 1, coluna - 1, somaAtual);  // Caminho à esquerda
+            int somaDireita = buscarMelhorCaminho(matriz, linha - 1, coluna + 1, somaAtual);   // Caminho à direita
+            int somaMeio = buscarMelhorCaminho(matriz, linha - 1, coluna, somaAtual);          // Caminho ao meio
             melhorSoma = Math.max(somaEsquerda, Math.max(somaDireita, somaMeio));
-
-        } else {
-            // Se não for bifurcação nem trifurcação, continuar na mesma direção (baixo)
-            melhorSoma = buscarMelhorCaminho(matriz, linha + 1, coluna, somaAtual);
+        }
+        // Se não for bifurcação nem trifurcação, continuar na mesma direção (baixo)
+        else {
+            melhorSoma = buscarMelhorCaminho(matriz, linha - 1, coluna, somaAtual);
         }
 
         return melhorSoma;
     }
+
 
     private static char[][] convertLinesToMatrix(List<String> lines) {
         int numeroLinhas = lines.size();
