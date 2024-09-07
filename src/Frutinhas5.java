@@ -12,13 +12,14 @@ public class Frutinhas5 {
         char[][] arvoreLida = convertLinesToMatrix(leArvore());
         imprimeArvore(arvoreLida);
         //buscarMelhorCaminho(arvoreLida,0,0,0);
-        leRoot(arvoreLida);
+        int[] coordenadasRoot = new int[2];
+        coordenadasRoot = leRoot(arvoreLida);
         //System.out.println(buscarMelhorCaminho(arvoreLida,0,0,0));
-        //System.out.println(buscarMelhorCaminho(arvoreLida,30,14,0)+ "aaaaaaa");
+        System.out.println(buscarMelhorCaminho(arvoreLida,coordenadasRoot[0],coordenadasRoot[1],0)+ "aaaaaaa");
 
     }
 
-    public static int buscarMelhorCaminho(char[][] matriz, int linha, int coluna, int somaAtual) {//devemos passar nossa matrix e a coordenada do nosso root
+    public static int buscarMelhorCaminho(char[][] matriz,int linha,int coluna, int somaAtual) {//devemos passar nossa matrix e a coordenada do nosso root
         // Verificar se estamos fora dos limites da matriz
 //        if (linha < 0 || linha >= matriz.length || coluna < 0 || coluna >= matriz[0].length) {
 //            System.out.println("gay");
@@ -76,17 +77,6 @@ public class Frutinhas5 {
         return melhorSoma;
     }
 
-
-
-
-
-
-
-
-
-
-
-
     private static char[][] convertLinesToMatrix(List<String> lines) {
         int numeroLinhas = lines.size();
         int numeroColunas = lines.stream().mapToInt(String::length).max().orElse(0);
@@ -127,20 +117,23 @@ public class Frutinhas5 {
         }
         return lines;
     }
-    public static char[][] leRoot(char[][] arvoreLida){//ACHAR O ROOT INVERTENDO FAZENDO UM FOR DO CONTRARIO OK
+    public static int[] leRoot(char[][] arvoreLida){//ACHAR O ROOT INVERTENDO FAZENDO UM FOR DO CONTRARIO OK
+        //Fiz o metodo que retorna um vetor para podermos separar em linha e coluna e usar no nosso metodo de buscar melhor caminho
         int numRows = arvoreLida.length;
         int numCols = arvoreLida[0].length;
+        int[] valorRetorno = new int[2];
         for(int i=numRows-1; i > 0 ;i--){
             //este for começa a processar a arvore de baixo para cima
             for(int j = 0; j < numCols; j++){
                 //aqui fica normal pois é da esquerda pra direita
                 String valor = String.valueOf(arvoreLida[i][j]);
                 if(!valor.isBlank()){
+                    valorRetorno[0] = i;//LINHA
+                    valorRetorno[1] = j;//COLUNA
                     System.out.println(valor);
-                    return new char[i][j];
                 }
             }
         }
-        return null;
+        return valorRetorno;
     }
 }
