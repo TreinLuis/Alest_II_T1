@@ -41,28 +41,50 @@ public class Teste {
 
         int melhorSoma = somaAtual;
 
-        // Se for uma bifurcação (V), explorar dois caminhos
-        if (atual == 'V') {
-            System.out.println("Bifurcação (V) encontrada");
-            int somaEsquerda = buscarMelhorCaminho(matriz, linha - 1, coluna - 1, somaAtual);  // Caminho à esquerda
-            int somaDireita = buscarMelhorCaminho(matriz, linha - 1, coluna + 1, somaAtual);   // Caminho à direita
-            melhorSoma = Math.max(somaEsquerda, somaDireita);
-        }
-        // Se for uma trifurcação (W), explorar três caminhos
-        else if (atual == 'W') {
-            System.out.println("Trifurcação (W) encontrada");
-            int somaEsquerda = buscarMelhorCaminho(matriz, linha - 1, coluna - 1, somaAtual);  // Caminho à esquerda
-            int somaDireita = buscarMelhorCaminho(matriz, linha - 1, coluna + 1, somaAtual);   // Caminho à direita
-            int somaMeio = buscarMelhorCaminho(matriz, linha - 1, coluna, somaAtual);          // Caminho ao meio
-            melhorSoma = Math.max(somaEsquerda, Math.max(somaDireita, somaMeio));
-        }
-        // Se não for bifurcação nem trifurcação, continuar na mesma direção (baixo)
-        else {
-            melhorSoma = buscarMelhorCaminho(matriz, linha - 1, coluna, somaAtual);
+        // Verificar o tipo de bifurcação ou caminho
+        switch (atual) {
+            case 'V':
+                System.out.println("Bifurcação (V) encontrada");
+                int somaEsquerda = buscarMelhorCaminho(matriz, linha - 1, coluna - 1, somaAtual);  // Caminho à esquerda
+                int somaDireita = buscarMelhorCaminho(matriz, linha - 1, coluna + 1, somaAtual);   // Caminho à direita
+                melhorSoma = Math.max(somaEsquerda, somaDireita);
+                break;
+
+            case 'W':
+                System.out.println("Trifurcação (W) encontrada");
+                int somaEsquerdaW = buscarMelhorCaminho(matriz, linha - 1, coluna - 1, somaAtual);  // Caminho à esquerda
+                int somaDireitaW = buscarMelhorCaminho(matriz, linha - 1, coluna + 1, somaAtual);   // Caminho à direita
+                int somaMeioW = buscarMelhorCaminho(matriz, linha - 1, coluna, somaAtual);          // Caminho ao meio
+                melhorSoma = Math.max(somaEsquerdaW, Math.max(somaDireitaW, somaMeioW));
+                break;
+
+            case '\\':
+                System.out.println("Caminho (\\) encontrado");
+                int somaBaixoEsquerda = buscarMelhorCaminho(matriz, linha - 1, coluna - 1, somaAtual);  // Caminho para baixo e esquerda
+                melhorSoma = somaBaixoEsquerda;
+                break;
+
+            case '/':
+                System.out.println("Caminho (/) encontrado");
+                int somaBaixoDireita = buscarMelhorCaminho(matriz, linha - 1, coluna + 1, somaAtual);   // Caminho para baixo e direita
+                melhorSoma = somaBaixoDireita;
+                break;
+
+            case '|':
+                System.out.println("Caminho (|) encontrado");
+                int somaAbaixo = buscarMelhorCaminho(matriz, linha - 1, coluna, somaAtual);          // Caminho apenas para baixo
+                melhorSoma = somaAbaixo;
+                break;
+
+            default:
+                // Se não for um caractere de bifurcação ou caminho, continuar na mesma direção (baixo)
+                melhorSoma = buscarMelhorCaminho(matriz, linha - 1, coluna, somaAtual);
+                break;
         }
 
         return melhorSoma;
     }
+
 
 
     private static char[][] convertLinesToMatrix(List<String> lines) {
@@ -125,3 +147,6 @@ public class Teste {
         return null;
     }
 }
+//ANOTACOES
+//QUANDO EU ACHO UM VALOR ELE SE PERDE E PARA DE PERCORRER DA MANEIRA CORRETA
+//AGORA PRECISAMOS IMPLEMENTAR UMA LÓGICA QUE ELE LEIA NUMERO E CONTINUE NO CAMINHAMENTO CORRETO
