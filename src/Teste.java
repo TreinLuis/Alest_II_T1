@@ -15,78 +15,96 @@ public class Teste {
         int[] coordenadasRoot = new int[2];
         coordenadasRoot = leRoot(arvoreLida);
         //System.out.println(buscarMelhorCaminho(arvoreLida,0,0,0));
-        System.out.println(buscarMelhorCaminho(arvoreLida,coordenadasRoot[0],coordenadasRoot[1],0)+ "aaaaaaa");
+        System.out.println(buscarMelhorCaminho(arvoreLida,coordenadasRoot[0],coordenadasRoot[1],0, " ")+ "aaaaaaa");
 
     }
 
-    public static int buscarMelhorCaminho(char[][] matriz, int linha, int coluna, int somaAtual) {
+    public static int buscarMelhorCaminho(char[][] matriz, int linha, int coluna, int somaAtual,String percorrer) {
         // Verificar se estamos fora dos limites da matriz
         if (linha < 0 || linha >= matriz.length || coluna < 0 || coluna >= matriz[0].length) {
+            System.out.println("Saindo dos limites: [" + linha + ", " + coluna + "] - Soma atual: " + somaAtual);
             return somaAtual;  // Retorna a soma atual se sair dos limites da matriz
         }
 
         char atual = matriz[linha][coluna];
-        System.out.println("Posição [" + linha + ", " + coluna + "] = " + atual);
+        System.out.println("Posição atual [" + linha + ", " + coluna + "] = " + atual);
 
         // Se for '#', é o final de um ramo, retornar a soma acumulada
         if (atual == '#') {
+            System.out.println("Chegou ao final de um ramo: [" + linha + ", " + coluna + "] - Soma final: " + somaAtual);
             return somaAtual;
         }
 
         // Se for um número, acumular o valor na soma atual
         if (Character.isDigit(atual)) {
+            if(percorrer.equals("esquerda")) {
+                int somaEsquerda = buscarMelhorCaminho(matriz, linha - 1, coluna - 1, somaAtual,"esquerda");  // Caminho à esquerda
+            }
             somaAtual += Character.getNumericValue(atual);
-            System.out.println("Soma acumulada: " + somaAtual);
-
+            System.out.println("Número encontrado: " + atual + " - Soma acumulada: " + somaAtual);
         }
 
-        int melhorSoma = somaAtual;
+        int melhorSoma = Integer.MIN_VALUE;  // Inicializa com um valor baixo para maximização
 
         // Verificar o tipo de bifurcação ou caminho
         switch (atual) {
             case 'V':
-                System.out.println("Bifurcação (V) encontrada");
-
-                int somaEsquerda = buscarMelhorCaminho(matriz, linha - 1, coluna - 1, somaAtual);  // Caminho à esquerda
-                int somaDireita = buscarMelhorCaminho(matriz, linha - 1, coluna + 1, somaAtual);   // Caminho à direita
+                System.out.println("Bifurcação (V) encontrada na posição [" + linha + ", " + coluna + "]");
+                // Bifurcação (V) encontrada
+                // Explora ambos os caminhos: à esquerda e à direita
+                int somaEsquerda = buscarMelhorCaminho(matriz, linha - 1, coluna - 1, somaAtual,"esquerda");  // Caminho à esquerda
+                int somaDireita = buscarMelhorCaminho(matriz, linha - 1, coluna + 1, somaAtual,"direita");   // Caminho à direita
                 melhorSoma = Math.max(somaEsquerda, somaDireita);
+                System.out.println("Melhor soma após bifurcação (V): " + melhorSoma);
                 break;
 
             case 'W':
-                System.out.println("Trifurcação (W) encontrada");
-                int somaEsquerdaW = buscarMelhorCaminho(matriz, linha - 1, coluna - 1, somaAtual);  // Caminho à esquerda
-                int somaDireitaW = buscarMelhorCaminho(matriz, linha - 1, coluna + 1, somaAtual);   // Caminho à direita
-                int somaMeioW = buscarMelhorCaminho(matriz, linha - 1, coluna, somaAtual);          // Caminho ao meio
+                System.out.println("Trifurcação (W) encontrada na posição [" + linha + ", " + coluna + "]");
+                // Trifurcação (W) encontrada
+                // Explora os três caminhos: à esquerda, à direita e ao meio
+                int somaEsquerdaW = buscarMelhorCaminho(matriz, linha - 1, coluna - 1, somaAtual,"esquerda");  // Caminho à esquerda
+                int somaDireitaW = buscarMelhorCaminho(matriz, linha - 1, coluna + 1, somaAtual,"esquerda");   // Caminho à direita
+                int somaMeioW = buscarMelhorCaminho(matriz, linha - 1, coluna, somaAtual,"esquerda");          // Caminho ao meio
                 melhorSoma = Math.max(somaEsquerdaW, Math.max(somaDireitaW, somaMeioW));
+                System.out.println("Melhor soma após trifurcação (W): " + melhorSoma);
                 break;
 
             case '\\':
-                System.out.println("Caminho (\\) encontrado");
-                int somaBaixoEsquerda = buscarMelhorCaminho(matriz, linha - 1, coluna - 1, somaAtual);  // Caminho para baixo e esquerda
-                melhorSoma = somaBaixoEsquerda;
+                System.out.println("Caminho (\\) encontrado na posição [" + linha + ", " + coluna + "]");
+                // Caminho (\) encontrado
+                // Explora o caminho para baixo e à esquerda
+                melhorSoma = buscarMelhorCaminho(matriz, linha - 1, coluna - 1, somaAtual,"esquerda");
+                System.out.println("Melhor soma após caminho (\\): " + melhorSoma);
                 break;
 
             case '/':
-                System.out.println("Caminho (/) encontrado");
-                int somaBaixoDireita = buscarMelhorCaminho(matriz, linha - 1, coluna + 1, somaAtual);   // Caminho para baixo e direita
-                melhorSoma = somaBaixoDireita;
+                System.out.println("Caminho (/) encontrado na posição [" + linha + ", " + coluna + "]");
+                // Caminho (/) encontrado
+                // Explora o caminho para baixo e à direita
+                melhorSoma = buscarMelhorCaminho(matriz, linha - 1, coluna + 1, somaAtual,"esquerda");
+                System.out.println("Melhor soma após caminho (/): " + melhorSoma);
                 break;
 
             case '|':
-                System.out.println("Caminho (|) encontrado");
-                int somaAbaixo = buscarMelhorCaminho(matriz, linha - 1, coluna, somaAtual);          // Caminho apenas para baixo
-                melhorSoma = somaAbaixo;
+                System.out.println("Caminho (|) encontrado na posição [" + linha + ", " + coluna + "]");
+                // Caminho (|) encontrado
+                // Explora o caminho apenas para baixo
+                melhorSoma = buscarMelhorCaminho(matriz, linha - 1, coluna, somaAtual,"esquerda");
+                System.out.println("Melhor soma após caminho (|): " + melhorSoma);
                 break;
 
             default:
                 // Se não for um caractere de bifurcação ou caminho, continuar na mesma direção (baixo)
-
-                melhorSoma = buscarMelhorCaminho(matriz, linha - 1, coluna, somaAtual);
+                System.out.println("Caminho padrão encontrado na posição [" + linha + ", " + coluna + "]");
+                melhorSoma = buscarMelhorCaminho(matriz, linha - 1, coluna, somaAtual,"esquerda");
+                System.out.println("Melhor soma após caminho padrão: " + melhorSoma);
                 break;
         }
 
         return melhorSoma;
     }
+
+
 
 
 
