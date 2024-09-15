@@ -37,6 +37,7 @@ public class Teste {
         if (Character.isDigit(atual)) {
             somaAtual += Character.getNumericValue(atual);
             System.out.println("Soma acumulada: " + somaAtual);
+
         }
 
         int melhorSoma = somaAtual;
@@ -45,6 +46,7 @@ public class Teste {
         switch (atual) {
             case 'V':
                 System.out.println("Bifurcação (V) encontrada");
+
                 int somaEsquerda = buscarMelhorCaminho(matriz, linha - 1, coluna - 1, somaAtual);  // Caminho à esquerda
                 int somaDireita = buscarMelhorCaminho(matriz, linha - 1, coluna + 1, somaAtual);   // Caminho à direita
                 melhorSoma = Math.max(somaEsquerda, somaDireita);
@@ -78,6 +80,7 @@ public class Teste {
 
             default:
                 // Se não for um caractere de bifurcação ou caminho, continuar na mesma direção (baixo)
+
                 melhorSoma = buscarMelhorCaminho(matriz, linha - 1, coluna, somaAtual);
                 break;
         }
