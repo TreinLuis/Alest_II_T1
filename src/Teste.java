@@ -47,6 +47,7 @@ public class Teste {
                 int meio = buscarMelhorCaminho(matriz, linha - 1, coluna , somaAtual,"meio");  // Caminho à esquerda
             }
             System.out.println("Número encontrado: " + atual + " - Soma acumulada: " + somaAtual);
+            matriz[linha][coluna] = '0';  // Ou você pode usar ' ' se preferir espaço vazio
         }
 
         int melhorSoma = Integer.MIN_VALUE;  // Inicializa com um valor baixo para maximização
@@ -87,7 +88,7 @@ public class Teste {
                 // Caminho (/) encontrado
                 // Explora o caminho para baixo e à direita
                 melhorSoma = buscarMelhorCaminho(matriz, linha - 1, coluna + 1, somaAtual,"direita");//Não sei oque fazer ainda
-                System.out.println("Melhor soma após caminho (/): " + melhorSoma);
+                //System.out.println("Melhor soma após caminho (/): " + melhorSoma);
                 break;
 
             case '|':
@@ -95,15 +96,15 @@ public class Teste {
                 // Caminho (|) encontrado
                 // Explora o caminho apenas para baixo
                 melhorSoma = buscarMelhorCaminho(matriz, linha - 1, coluna, somaAtual,"meio");
-                System.out.println("Melhor soma após caminho (|): " + melhorSoma);
+                //System.out.println("Melhor soma após caminho (|): " + melhorSoma);
                 break;
 
             default:
                 // Se não for um caractere de bifurcação ou caminho, continuar na mesma direção (baixo)
-                System.out.println("Caminho padrão encontrado na posição [" + linha + ", " + coluna + "]");
-                System.out.println("gay");
+                //System.out.println("Caminho padrão encontrado na posição [" + linha + ", " + coluna + "]");
+                //System.out.println("gay");
                 //melhorSoma = buscarMelhorCaminho(matriz, linha - 1, coluna, somaAtual,"esquerda");
-                System.out.println("Melhor soma após caminho padrão: " + melhorSoma);
+                //System.out.println("Melhor soma após caminho padrão: " + melhorSoma);
                 break;
         }
 
